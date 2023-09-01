@@ -1,10 +1,416 @@
-<!DOCTYPE html>
-<html lang="es">
+﻿<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Buen Buceo</title>
-</head>
-<body>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>.: BUEN BUCEO :.</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <!-- build:css Content/estilos.min.css -->
+    <!--Angular Material style sheet-->
 
+    <link rel="stylesheet" href="styles/sourceSansFont.css">
+    <link rel="stylesheet" href="styles/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <link href="node_modules/angular-busy/angular-busy.css" rel="stylesheet" />
+    <!--<link href="styles/custom.min.css" rel="stylesheet" />-->
+    <link href="styles/sitio.css" rel="stylesheet" />
+    <link rel="stylesheet" href="node_modules/angularjs-bootstrap-datetimepicker/src/css/datetimepicker.css" />
+
+    <link href="node_modules/@pnotify/core/dist/PNotify.css" rel="stylesheet" type="text/css" />
+    <link href="node_modules/@pnotify/mobile/dist/PNotifyMobile.css" rel="stylesheet" type="text/css" />
+    <link href="node_modules/@pnotify/core/dist/BrightTheme.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="node_modules/@pnotify/bootstrap4/dist/PNotifyBootstrap4.css" />
+    <!--<link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/22.1.4/css/dx.common.css" />-->
+    <link rel="stylesheet" type="text/css" href="styles/dx.light.css" />
+    <link href="node_modules/angularjs-toaster/toaster.css" rel="stylesheet" type="text/css" />
+    <link href="node_modules/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <link href="node_modules/font-awesome/css/font-awesome.css" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="node_modules/datatables/media/css/jquery.dataTables.min.css">
+
+    <link href="node_modules/ar-poncho/dist/css/icono-arg.css" rel="stylesheet" />
+    <!-- endbuild -->
+    <link rel="shortcut icon" type="image/png" href="content/icons/spf_favicon.png" />
+    <!--es como hacer un control f5, porque hace que expire la pagina-->
+    <meta http-equiv="expires" content="mon, 27 sep 2022 14:30:00 GMT">
+    <meta name="robots" content="noindex,nofollow">
+
+    <!--<link rel="stylesheet" type="text/css" href="styles/dx.light.css" />-->
+
+</head>
+<body class="sidebar-mini control-sidebar-slide-open layout-fixed layout-navbar-fixed" ng-app="angularApp" ng-cloak ng-controller="appController as appCtrl" ng-class="appCtrl.user().isAuthenticated ? 'nav-md' : 'login'">
+    <toaster-container>
+    </toaster-container>
+    <!-- LOGIN -->
+    <div class="wrapper" ng-show="!appCtrl.user().isAuthenticated">
+        <div class="lockscreen-wrapper" style="margin-top: 25px;">
+            <div class="lockscreen-logo">
+                <b>INSTITUTOS DE FORMACIÓN Y CAPACITACIÓN</b>
+            </div>
+            <!-- START LOCK SCREEN ITEM -->
+            <div class="lockscreen-item">
+                <!-- lockscreen image -->
+                <div class="text-center">
+                    <img src="images/torreon.png" alt="User Image">
+                </div>
+                <!-- /.lockscreen-image -->
+                <!-- lockscreen credentials (contains the form) -->
+
+                <button type="button" ng-click="appCtrl.login()" class="btn btn-block btn-default btn-sm">Entrar</button>
+                <br />
+                <form action="https://tad.spf.gob.ar/" target="_blank">
+                    <button type="submit" class="btn btn-block btn-default btn-sm">Crear cuenta</button>
+                </form>
+                <!-- /.lockscreen credentials -->
+            </div>
+            <!-- /.lockscreen-item -->
+            <div class="help-block text-center">
+                Para usar la plataforma debe estar logueado en el sistema de usuarios (TAD - Trámites a distancia del SPF)
+            </div>
+            <div class="border-top my-3"></div>
+            <div class="lockscreen-footer text-center">
+                EPN - ES <br /> Servicio Penitenciario Federal - <a href="https://www.spf.gob.ar/" target="_blank">WWW.SPF.GOB.AR</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="wrapper" ng-show="appCtrl.user().isAuthenticated">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">Inicio</a>
+                </li>
+                <!--<li class="nav-item d-none d-sm-inline-block">
+                    <a href="javascript:void(0);" ng-click="appCtrl.seleccionarRuta('/agenteConsulta')" class="nav-link">Mis capacitaciones</a>
+                </li>-->
+            </ul>
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        {{appCtrl.user().data.profile.givenname | uppercase}} <i class="fas fa-angle-down"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <!--<a href="javascript:void(0);" ng-click="appCtrl.seleccionarRuta('/agenteConsulta')" class="dropdown-item">
+                            <i class="fa fa-user"></i> Mi perfil
+                        </a>-->
+                        <a href="javascript:void(0);" ng-click="appCtrl.logout()" class="dropdown-item">
+                            <i class="fa fa-sign-out"></i> Salir
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary">
+            <!-- Brand Logo -->
+            <a href="#" class="brand-link">
+                <img src="images/torreon.png" alt="PGA" class="brand-image img-circle elevation-3" style="opacity: .95; background-color: white;">
+                <span class="brand-text font-weight-light">EPN - ES</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar user panel (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image" style="margin-top:13px;">
+                        <img src="images/NoImageUser.jpg" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">{{appCtrl.user().data.profile.givenname | uppercase}}</a>
+                        <a href="#">{{appCtrl.user().data.profile.grado}}</a>
+                    </div>
+                </div>
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column nav-legacy"
+                        data-widget="treeview"
+                        role="menu"
+                        data-accordion="true">
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fa fa-users"></i>
+                                <p>
+                                    &nbsp;Postulantes
+                                    <i class="fas fa-angle-right right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" ng-click="appCtrl.seleccionarRuta('/postulanteBuscarPorDni')" class="nav-link">
+                                        <i class="fa fa-minus nav-icon"></i>
+                                        <p>Búsqueda por DNI</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fa fa-calendar-check-o"></i>
+                                <p>
+                                    &nbsp;Campañas
+                                    <i class="fas fa-angle-right right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" ng-click="appCtrl.seleccionarRuta('/campanasListado')" class="nav-link">
+                                        <i class="fa fa-minus nav-icon"></i>
+                                        <p>Listado de campañas</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" ng-click="appCtrl.seleccionarRuta('/campanaAgregar')" class="nav-link">
+                                        <i class="fa fa-minus nav-icon"></i>
+                                        <p>Nueva Campaña</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fa fa-envelope-o"></i>
+                                <p>
+                                    &nbsp;Mails
+                                    <i class="fas fa-angle-right right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" ng-click="appCtrl.seleccionarRuta('/envioCorreoPorDni')" class="nav-link">
+                                        <i class="fa fa-minus nav-icon"></i>
+                                        <p>Enviar correo masivo</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" ng-click="appCtrl.seleccionarRuta('/reporteEnvioCorreoPorDni')" class="nav-link">
+                                        <i class="fa fa-minus nav-icon"></i>
+                                        <p>Bandeja de salida</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!--<li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fa fa-tasks" "></i>
+                                <p>
+                                    &nbsp;Calificaciones
+                                    <i class="fas fa-angle-right right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" ng-click="appCtrl.seleccionarRuta('/calificaciones')" class="nav-link">
+                                        <i class="fa fa-minus nav-icon"></i>
+                                        <p>Importar calificaciones</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>-->
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fa fa-search"></i>
+                                <p>
+                                    &nbsp;Consultas
+                                    <i class="fas fa-angle-right right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" ng-click="appCtrl.seleccionarRuta('/postulanteConsulta')" class="nav-link">
+                                        <i class="fa fa-minus nav-icon"></i>
+                                        <p>Consulta de postulantes</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" ng-click="appCtrl.seleccionarRuta('/postulanteMapa')" class="nav-link">
+                                        <i class="fa fa-minus nav-icon"></i>
+                                        <p>Mapa</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="" class="nav-link">
+                                <i class="nav-icon fa fa-cogs"></i>
+                                <p>
+                                    &nbsp;ADMIN
+                                    <i class="fas fa-angle-right right"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="javascript:void(0);" ng-click="appCtrl.seleccionarRuta('/admin')" class="nav-link" ng-show="appCtrl.checkPermiso('Incorporaciones.Admin')">
+                                        <i class="fa fa-minus nav-icon"></i>
+                                        <p>Administrar datos</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
+            </div>
+            <!-- /.sidebar-menu -->
+            <!-- /.sidebar -->
+        </aside>
+
+        <div class="content-wrapper" role="main">
+            <div ng-view>
+
+            </div>
+        </div>
+
+        <!-- Warning MODAL -->
+        <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="infoDlg">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel2">ATENCIÓN</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>{{appCtrl.infodlgText}}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" id="btn_cerrar">CERRAR</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CONFIRM modal-->
+        <div class="modal fade confirm_dialog" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel2">Atención</h4>
+                    </div>
+                    <div class="modal-body">
+                        <h4 style="text-align:center;">{{appCtrl.confirmDlgTitle}}</h4>
+                        <p>{{appCtrl.confirmDlgText}}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" ng-click="appCtrl.cancelDialog()">Cancelar</button>
+                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" ng-click="appCtrl.confirmarDialog()">Confirmar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Footer -->
+        <footer class="main-footer">
+            <!-- Default to the left -->
+            <strong>INSTITUTOS DE FORMACIÓN - Servicio Penitenciario Federal <a href="https://nuestroespacio.spf.gob.ar/" target="_blank"> - SPF.GOB.AR</a></strong>
+            <!--<strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.-->
+        </footer>
+
+    </div>
+
+    <script src="config/env.js"></script>
+    <!-- build:js Scripts/oidc-client.js -->
+    <script src="Scripts/oidc-client_min.js"></script>
+    <!-- endbuild -->
+    <!-- build:js Scripts/vendor.min.js -->
+    <script src="Scripts/jquery.min.js"></script>
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-aria/angular-aria.min.js"></script>
+    <script src="node_modules/angular-route/angular-route.min.js"></script>
+    <script src="node_modules/angular-resource/angular-resource.min.js"></script>
+
+    <!-- AdminLTE App -->
+    <script src="dist/js/adminlte.min.js"></script>
+    <script src="Scripts/ui-bootstrap-tpls-0.6.0.js"></script>
+    <script src="Scripts/bootstrap.bundle.min.js"></script>
+    <!--<script src="Scripts/jquery.dataTables.min.js"></script>-->
+    <script src="Scripts/angular-datatables.min.js"></script>
+    <script src="node_modules/datatables/media/js/jquery.dataTables.min.js"></script>
+
+
+    <script src="Scripts/custom.js"></script>
+
+    <script src="node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+    <script src="node_modules/moment/min/moment.min.js"></script>
+    <script src="node_modules/angular-busy/dist/angular-busy.min.js"></script>
+    <script src="node_modules/chart.js/dist/Chart.min.js"></script>
+    <script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
+    <script src="node_modules/ngmap/build/scripts/ng-map.min.js"></script>
+    <script src="node_modules/angularjs-toaster/toaster.min.js"></script>
+
+    <script src="Scripts/ng-file-upload.min.js"></script>
+
+    <script src="Scripts/dx-quill.min.js"></script>
+    <script src="Scripts/dx.all.js"></script>
+
+    <script src="Scripts/autosize.min.js"></script>
+    <script src="node_modules/pdfmake/build/pdfmake.min.js"></script>
+    <script src="node_modules/pdfmake/build/vfs_fonts.js"></script>
+    <script src="node_modules/angular-trix/dist/angular-trix.min.js"></script>
+    <script src="node_modules/@pnotify/core/dist/PNotify.js"></script>
+    <script type="text/javascript" src="node_modules/angularjs-bootstrap-datetimepicker/src/js/datetimepicker.js"></script>
+    <script type="text/javascript" src="node_modules/angularjs-bootstrap-datetimepicker/src/js/datetimepicker.templates.js"></script>
+    <!-- endbuild -->
+    <!-- build:js Scripts/mainapp.min.js -->
+    <script src="app.js"></script>
+    <script src="app.security.js"></script>
+    <!-- endbuild -->
+    <!-- build:js Scripts/controllers.min.js -->
+    <script src="app.route.js"></script>
+    <script src="controllers/appController.js"></script>
+    <script src="controllers/homeController.js"></script>
+    <script src="controllers/adminController.js"></script>
+
+    <script src="controllers/envioCorreoPorDniController.js"></script>
+    <script src="controllers/reporteEnvioCorreoPorDniController.js"></script>
+    <script src="controllers/postulanteConsultaController.js"></script>
+    <script src="controllers/postulanteDetalleController.js"></script>
+    <script src="controllers/postulanteBuscarPorDniController.js"></script>
+    <script src="controllers/postulantesMapaController.js"></script>
+    <script src="controllers/documentacionPostulanteController.js"></script>
+    <script src="controllers/mailsPostulanteController.js"></script>
+
+    <script src="controllers/campanaAgregarController.js"></script>
+    <script src="controllers/campanaEditarController.js"></script>
+    <script src="controllers/campanasListadoController.js"></script>
+    <script src="controllers/campanaDetalleController.js"></script>
+    <script src="controllers/historialCampanaPostulanteController.js"></script>
+    <script src="controllers/estudiosMedicosPostulanteController.js"></script>
+    <script src="controllers/logoutController.js"></script>
+    <script src="controllers/datosEstaticosController.js"></script>
+    <script src="controllers/calificacionesController.js"></script>
+
+    <!-- endbuild -->
+    <!-- build:js Scripts/servicios.min.js -->
+    <script src="services/adminService.js"></script>
+    <script src="services/homeService.js"></script>
+    <script src="services/datosEstaticosService.js"></script>
+
+    <script src="components/encabezadoCampanaComponent.js"></script>
+    <script src="components/controllers/encabezadoCampanaComponentController.js"></script>
+    <script src="components/campanaEtapasComponent.js"></script>
+    <script src="components/controllers/campanaEtapasComponentController.js"></script>
+
+    <!-- endbuild -->
+    <!-- build:js Scripts/components.min.js -->
+    <!-- endbuild -->
+    <!-- chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!--<script src="node_modules/chart.js/dist/Chart.min.js"></script>
+    <script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>-->
 </body>
+
 </html>
