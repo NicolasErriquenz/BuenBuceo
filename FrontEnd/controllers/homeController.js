@@ -15,14 +15,14 @@
                 };
 
                 vm.GetStats = function() {
-                    vm.busy.promise = homeService.GetEstadisticasHome(
-                        function (response) {
-                            vm.Stats = response.data;
-                            vm.MostrarStats();
-                            console.log(vm.Stats);
-                        },
-                        function (e) { console.log("ERROR GetEstadisticasHome", e); }
-                    );
+                    // vm.busy.promise = homeService.GetEstadisticasHome(
+                    //     function (response) {
+                    //         vm.Stats = response.data;
+                    //         vm.MostrarStats();
+                    //         console.log(vm.Stats);
+                    //     },
+                    //     function (e) { console.log("ERROR GetEstadisticasHome", e); }
+                    // );
                 }
 
                 vm.SetStats = function () {
